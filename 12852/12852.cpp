@@ -1,9 +1,6 @@
 // https://www.acmicpc.net/problem/12852 //
 
 #include <iostream>
-#include <vector>
-#include <utility>
-
 using namespace std;
 
 void solve(int n) {
@@ -17,7 +14,6 @@ void solve(int n) {
     }
     int* dp = new int[n + 1]; //memoization
     int* prevNum = new int[n + 1]; //save previous number (memoization)
-    vector<int> numbers;
 
     dp[1] = 0; dp[2] = 1; //initialize dp[1], dp[2]
     prevNum[1] = -1; prevNum[2] = 1; //initialize prevNum[1], prevNum[2] ... prevNum[1] = undefined (set as -1)
