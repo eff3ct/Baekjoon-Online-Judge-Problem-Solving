@@ -16,15 +16,15 @@ void solve(int n) {
         return;
     }
     int* dp = new int[n + 1]; //memoization
-    int* prevNum = new int[n + 1];
+    int* prevNum = new int[n + 1]; //save previous number (memoization)
     vector<int> numbers;
 
-    dp[1] = 0; dp[2] = 1;
-    prevNum[1] = -1; prevNum[2] = 1;
+    dp[1] = 0; dp[2] = 1; //initialize dp[1], dp[2]
+    prevNum[1] = -1; prevNum[2] = 1; //initialize prevNum[1], prevNum[2] ... prevNum[1] = undefined (set as -1)
     int a, b, c;
-    for(int i = 3; i <= n; ++i) {
+    for(int i = 3; i <= n; ++i) { // dp[n] = min(dp[n-1] + 1, dp[n/3] + 1, dp[n/2] + 1)
         dp[i] = dp[i - 1] + 1;
-        prevNum[i] = i - 1;
+        prevNum[i] = i - 1; 
         if((i % 3) == 0) {
             if(dp[i] > (dp[i / 3] + 1)) {
                 prevNum[i] = i / 3;
@@ -39,10 +39,10 @@ void solve(int n) {
         }
     }
 
-    cout << dp[n] << "\n";
-    cout << n << " ";
+    cout << dp[n] << "\n"; //print count
+    cout << n << " "; //print first number
     int i = n;
-    while(prevNum[i] != -1) {
+    while(prevNum[i] != -1) { //print until prevNum[i] is undefined
         cout << prevNum[i] << " ";
         i = prevNum[i];
     }  
