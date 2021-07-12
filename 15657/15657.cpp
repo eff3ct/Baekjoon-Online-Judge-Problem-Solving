@@ -14,7 +14,6 @@ void printPicked(vector<int>& picked) {
 }
 
 void solve(int N, int M, vector<int>& picked, vector<int>& seq, int lastElement) {
-    static bool visit[10] = { false, };
     if(M == 0) {
         printPicked(picked);
         return;
