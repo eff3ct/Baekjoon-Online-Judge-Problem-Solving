@@ -9,8 +9,6 @@ using namespace std;
 int ret = INF;
 
 void solve(int idx, vector<pair<int, int>>& chosenChicken, vector<pair<int, int>>& chicken, vector<pair<int, int>>& house, int& M) {
-    static bool visit[13] = { false, };
-
     if(chosenChicken.size() == M) {
         int chickenDist = 0;
         for(auto& element : house) {
@@ -32,12 +30,9 @@ void solve(int idx, vector<pair<int, int>>& chosenChicken, vector<pair<int, int>
     }
 
     for(int i = idx; i < chicken.size(); ++i) {
-        if(visit[i]) continue;
-        visit[i] = true;
         chosenChicken.push_back(chicken[i]);
         solve(i + 1, chosenChicken, chicken, house, M);
         chosenChicken.pop_back();
-        visit[i] = false;
     }
 }
 
