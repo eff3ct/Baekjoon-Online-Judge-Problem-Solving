@@ -25,10 +25,10 @@ class segTree {
             + init(A, mid + 1, end, node * 2 + 1);
         }
 
-        void updateLazy(int start, int end, int node) {
+        void updateLazy(int start, int end, int node) { //propagate
             if(lazy[node] == 0) return;
             
-            tree[node] += (end- start + 1) * lazy[node];
+            tree[node] += (end - start + 1) * lazy[node];
 
             if(start != end) {
                 lazy[node * 2] += lazy[node];
