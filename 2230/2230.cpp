@@ -13,13 +13,17 @@ void solve(vector<int>& number, int& N, int& M) {
         return;
     }
 
-    int nowDiff = 0, low = 0, high = 0, res = INF;
-    while(true) {
-        if(nowDiff >= M) nowDiff = number[high] - number[low++];
-        else if(nowDiff < M && high == N) break;
-        else nowDiff = number[high++] - number[low];
+    int left = 0, right = 0;
+    int res = INF, diff = 0;
 
-        if(nowDiff >= M) res = min(res, nowDiff);
+    while(right != N) {
+        diff = number[right] - number[left];
+
+        if(diff >= M) {
+            res = min(res, diff);
+            left++;
+        }
+        else right++;
     }
     
     cout << res;

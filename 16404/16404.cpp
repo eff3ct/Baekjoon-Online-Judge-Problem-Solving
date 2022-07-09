@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define MAX 100'001
 
 using namespace std;
 typedef long long ll;
@@ -62,28 +63,44 @@ class segment_tree {
         }
 };
 
+int group_cnt;
+int in[MAX];
+int out[MAX];
+vector<int> adj[MAX];
+
+void DFS(int cur = 1) {
+    in[cur] = ++group_cnt;
+    for(auto& next : adj[cur]) {
+        DFS(next);
+    }
+    out[cur] = group_cnt;
+}
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int N, M, K; cin >> N >> M >> K;
-    segment_tree Tree(N);
+    int N, M; cin >> N >> M;
+    int x; cin >> x;
+    for(int i = 2; i <= N; ++i) {
+        cin >> x;
+        adj[x].push_back(i);
+    }
 
-    for(int i = 1; i <= N; ++i) {
-        ll tmp; cin >> tmp;
-        Tree.update(1, N, 1, i, i, tmp);
-    }    
+    segment_tree tree(N);
 
-    for(int i = 0; i < M + K; ++i) {
-        int a; cin >> a;
-        if(a == 1) {
-            ll b, c, d; cin >> b >> c >> d;
-            Tree.update(1, N, 1, b, c, d);
+    DFS();
+
+    while(M --> 0) {
+        int cmd; cin >> cmd;
+        if(cmd == 1) {
+            ll i, w; cin >> i >> w;
+            tree.update(1, N, 1, in[i], out[i], w);
         }
         else {
-            int b, c; cin >> b >> c;
-            cout << Tree.query(1, N, 1, b, c) << '\n';
+            ll i; cin >> i;
+            cout << tree.query(1, N, 1, in[i], in[i]) << '\n';
         }
     }
 

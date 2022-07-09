@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-typedef long long ll;
+using ll = long long;
+using pii = pair<int, int>;
+using ppii = pair<int, pii>;
 
 class segment_tree {
     private:
@@ -17,36 +19,35 @@ class segment_tree {
         void propagate(int start, int end, int node) {
             if(lazy[node] == 0) return;
 
-            tree[node] += (ll)(end - start + 1) * lazy[node];
+            tree[node] += lazy[node] * (end - start + 1);
 
             if(start != end) {
                 lazy[node * 2] += lazy[node];
                 lazy[node * 2 + 1] += lazy[node];
             }
-
+            
             lazy[node] = 0;
         }
 
-        void update(int start, int end, int node, int left, int right, ll diff) {
+        void update(int start, int end, int node, int left, int right, ll val) {
             propagate(start, end, node);
 
             if(start > right || end < left) return;
 
             if(left <= start && end <= right) {
-                tree[node] += (ll)(end - start + 1) * diff;
+                tree[node] += val * (end - start + 1);
 
                 if(start != end) {
-                    lazy[node * 2] += diff;
-                    lazy[node * 2 + 1] += diff;
+                    lazy[node * 2] += val;
+                    lazy[node * 2 + 1] += val;
                 }
 
                 return;
             }
 
             int mid = (start + end) / 2;
-
-            update(start, mid, node * 2, left, right, diff);
-            update(mid + 1, end, node * 2 + 1, left, right, diff);
+            update(start, mid, node * 2, left, right, val);
+            update(mid + 1, end, node * 2 + 1, left, right, val);
             tree[node] = tree[node * 2] + tree[node * 2 + 1];
         }
 
@@ -54,7 +55,6 @@ class segment_tree {
             propagate(start, end, node);
 
             if(start > right || end < left) return 0;
-
             if(left <= start && end <= right) return tree[node];
 
             int mid = (start + end) / 2;
@@ -67,23 +67,23 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int N, M, K; cin >> N >> M >> K;
-    segment_tree Tree(N);
+    int N, Q1, Q2; cin >> N >> Q1 >> Q2;
+    segment_tree tree(N);
 
     for(int i = 1; i <= N; ++i) {
-        ll tmp; cin >> tmp;
-        Tree.update(1, N, 1, i, i, tmp);
-    }    
+        ll k; cin >> k;
+        tree.update(1, N, 1, i, i, k);
+    }
 
-    for(int i = 0; i < M + K; ++i) {
-        int a; cin >> a;
-        if(a == 1) {
-            ll b, c, d; cin >> b >> c >> d;
-            Tree.update(1, N, 1, b, c, d);
+    for(int i = 0; i < Q1 + Q2; ++i) {
+        int cmd; cin >> cmd;
+        if(cmd == 1) {
+            int n, m; cin >> n >> m;
+            cout << tree.query(1, N, 1, n, m) << '\n';
         }
         else {
-            int b, c; cin >> b >> c;
-            cout << Tree.query(1, N, 1, b, c) << '\n';
+            int s, e, I; cin >> s >> e >> I;
+            tree.update(1, N, 1, s, e, I);
         }
     }
 

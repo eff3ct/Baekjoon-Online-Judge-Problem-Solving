@@ -67,7 +67,7 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int N, M, K; cin >> N >> M >> K;
+    int N; cin >> N;
     segment_tree Tree(N);
 
     for(int i = 1; i <= N; ++i) {
@@ -75,15 +75,16 @@ int main() {
         Tree.update(1, N, 1, i, i, tmp);
     }    
 
-    for(int i = 0; i < M + K; ++i) {
-        int a; cin >> a;
-        if(a == 1) {
-            ll b, c, d; cin >> b >> c >> d;
-            Tree.update(1, N, 1, b, c, d);
+    int M; cin >> M;
+    for(int i = 0; i < M; ++i) {
+        int cmd; cin >> cmd;
+        if(cmd == 1) {
+            ll i, j, k; cin >> i >> j >> k;
+            Tree.update(1, N, 1, i, j, k);
         }
         else {
-            int b, c; cin >> b >> c;
-            cout << Tree.query(1, N, 1, b, c) << '\n';
+            int x; cin >> x;
+            cout << Tree.query(1, N, 1, x, x) << '\n';
         }
     }
 
